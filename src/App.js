@@ -1,34 +1,22 @@
-import React from "react";
-import { FaBell, FaUser } from "react-icons/fa";
-import { IoMdExit } from "react-icons/io";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HelpDeskInterface from './components/HelpDeskInterface';
+import SignInModal from './components/SignInModal';
+import SignUpPage from './components/SignUpPage';
+import ForgotPasswordPage from './components/ForgotPasswordPage';
 
-const HelpDeskInterface = () => {
+
+const App = () => {
   return (
-    <>
-      <div className="header bg-turquoise flex h-20">
-        <div className="title text-white p-4 text-4xl font-semibold ml-4 italic ">
-          HelpDesk
-        </div>
-        <div className="justify-center items-center ml-auto flex p-4">
-          <div className=" p-2 text-sm font-semibold text-white bg-black border-2 border-black rounded-md">
-            BM
-          </div>
-          <div className="p-2 text-sm font-semibold  border-2 border-black rounded-md">
-            BI
-          </div>
-          <div className="p-4 text-xl">
-            <FaBell />
-          </div>
-          <div className="p-2 font-bold text-xl">
-            <FaUser/>
-          </div>
-          <div className="p-2 text-3xl">
-            <IoMdExit />
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
+    <Router>
+      <Routes>
+        <Route path='/' element={<HelpDeskInterface/>}/>
+        <Route path='/signin' element={<SignInModal/>}/>
+        <Route path='/signup' element={<SignUpPage/>}/>
+        <Route path='/forgot-password' element={<ForgotPasswordPage/>}/>
+      </Routes>
+    </Router>
+  )
+}
 
-export default HelpDeskInterface;
+export default App
