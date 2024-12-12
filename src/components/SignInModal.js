@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { FaTimes, FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 const SignInModal = () => {
   const [username, setUsername] = useState("");

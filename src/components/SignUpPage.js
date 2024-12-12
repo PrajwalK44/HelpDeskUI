@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
+
 import { Link, useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {

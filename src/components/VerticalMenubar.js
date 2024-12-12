@@ -1,13 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MdOutlineDashboard } from "react-icons/md";
 import { LuTicketPlus } from "react-icons/lu";
 import { BsTicketFill } from "react-icons/bs";
 import DashboardPage from "./DashboardPage";
+import NewTicketComponent from "./NewTicketComponent";
+import MyTicketComponent from "./MyTicketComponent";
 
 const VerticalMenubar = () => {
   const [activeItem, setActiveItem] = useState("Dashboard");
-  const NewTicketComponent=()=><div>hello </div>
-  const MyTicketComponent=()=><div>hello </div>
+  const [tickets, setTickets] = useState([]);
+
+  useEffect(() => {
+    try {
+   
+      const storedTickets = localStorage.getItem("tickets");
+      const parsedTickets = storedTickets ? JSON.parse(storedTickets) : [];
+
+      setTickets(Array.isArray(parsedTickets) ? parsedTickets : []);
+    } catch (error) {
+      console.error("Error parsing tickets from localStorage:", error);
+      // Reset tickets in localStorage if parsing fails
+      localStorage.setItem("tickets", JSON.stringify([]));
+      setTickets([]);
+    }
+  }, []);
+
+  const handleTicketsUpdate = (updatedTickets) => {
+    setTickets(updatedTickets);
+    // Ensure tickets are stored as JSON in localStorage
+    localStorage.setItem("tickets", JSON.stringify(updatedTickets));
+  };
 
   const menuItems = [
     {
@@ -18,12 +40,24 @@ const VerticalMenubar = () => {
     {
       name: "New Ticket",
       icon: <LuTicketPlus />,
-      component: <NewTicketComponent />,
+      component: (
+        <NewTicketComponent
+          onTicketCreated={(newTicket) => {
+            const updatedTickets = [...tickets, newTicket];
+            handleTicketsUpdate(updatedTickets);
+          }}
+        />
+      ),
     },
     {
       name: "My Ticket",
       icon: <BsTicketFill />,
-      component: <MyTicketComponent />,
+      component: (
+        <MyTicketComponent
+          initialTickets={tickets}
+          onTicketsUpdate={handleTicketsUpdate}
+        />
+      ),
     },
   ];
 
@@ -62,7 +96,7 @@ const VerticalMenubar = () => {
       </div>
 
       <div className="flex flex-col flex-grow h-screen">
-        <div className="flex-grow  p-6 overflow-hidden">
+        <div className="flex-grow p-6 overflow-auto">
           {menuItems.find((item) => item.name === activeItem)?.component}
         </div>
 
